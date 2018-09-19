@@ -6,16 +6,21 @@ let program = require('commander');
 let electionId;
 program
     .version('0.0.1')
-    .usage('[options] <electionId> <action>')
+    .usage('[options] <electionId>')
     .arguments('<electionId>').action(function (eId) {
         electionId = eId;
     })
     .option("-s, --status [status]", "status of transactions (default all)")
-    .option("-r, --rerun", "Rerun transactions")
+    .option("-r, --rerun", "rerun non-complete transactions")
     .parse(process.argv);
 
 if(program.status && ["pending", "complete", "error"].indexOf(program.status) == -1){
     console.log("status must be pending, complete, or error");
+    process.exit(1);
+}
+
+if(!electionId){
+    console.log("electionId is required (first arg)")
     process.exit(1);
 }
 
