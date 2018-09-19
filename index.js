@@ -71,8 +71,8 @@ const getTransactions = async (electionId, status) => {
 
 
 getTransactions(electionId, program.status).then((items) => {
+    console.log(JSON.stringify({ tx: items }));
     items.forEach(async (itm) => {
-        console.log(itm);
         if(program.rerun && itm.txStatus != "complete"){
             await asyncInvokeLambda("election-cast-vote", itm.event);
         }
