@@ -59,16 +59,14 @@ const getTransactions = async (electionId, status) => {
     let result = []
     let data = await docClient.query(params).promise();
 
-    if(status){
-        data.Items.forEach((itm)=>{
-            if(itm.txStatus === status){
-                result.push(itm);
-            }
-        })
-        return result;
-    } else {
-        return data.Items;
-    }
+    data.Items.forEach((itm)=>{
+        if(!status || itm.txStatus === status){
+            result.push(itm);
+        }
+    })
+    return result.sort((a,b)=>{
+        return a.txTimestamp - b.txTimestamp;
+    })
 }
 
 
